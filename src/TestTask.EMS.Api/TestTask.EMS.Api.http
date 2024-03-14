@@ -1,0 +1,6 @@
+@TestTask.EMS.Api_HostAddress = http://localhost:5117
+
+GET {{TestTask.EMS.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
