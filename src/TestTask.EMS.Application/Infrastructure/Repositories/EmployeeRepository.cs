@@ -8,7 +8,7 @@ namespace TestTask.EMS.Application.Infrastructure.Repositories;
 
 internal class EmployeeRepository : IEmployeeRepository
 {
-    private const string _doesEmployeeExist = @"
+    private const string _doesEmployeeExistQuery = @"
         SELECT CASE WHEN EXISTS(
             SELECT 1
             FROM Employee AS e
@@ -50,7 +50,7 @@ internal class EmployeeRepository : IEmployeeRepository
         using var connection = new SqlConnection(_connectionString.SqlServer);
         await connection.OpenAsync();
 
-        var command = new SqlCommand(_doesEmployeeExist, connection);
+        var command = new SqlCommand(_doesEmployeeExistQuery, connection);
         command.Parameters.AddWithValue("@EmployeeId", id);
 
         var doesExist = await command.ExecuteScalarAsync();
