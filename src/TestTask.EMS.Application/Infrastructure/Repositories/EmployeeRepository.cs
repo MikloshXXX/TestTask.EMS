@@ -79,6 +79,8 @@ internal class EmployeeRepository : IEmployeeRepository
             var managerId = managerIdSql.IsNull ? (int?) null : managerIdSql.Value;
             var isEnabled = reader.GetBoolean(3);
 
+			// In case, if direct manager of the employee is disabled
+   			// we get the first enabled higher-level manager for this employee
             var implicitManager = managerMap.ContainsKey(managerId ?? default)
                 ? managerMap[managerId.Value]
                 : managerId;
