@@ -69,7 +69,7 @@ internal class EmployeeRepository : IEmployeeRepository
         using var reader = await command.ExecuteReaderAsync();
 
         var employeeMap = new Dictionary<int, Employee>();
-        var managerMap = new Dictionary<int, Func<int>>();
+        var managerMap = new Dictionary<int, int>();
 
         while (await reader.ReadAsync())
         {
@@ -80,7 +80,7 @@ internal class EmployeeRepository : IEmployeeRepository
             var isEnabled = reader.GetBoolean(3);
 
             var implicitManager = managerMap.ContainsKey(managerId ?? default)
-                ? managerMap[managerId.Value]()
+                ? managerMap[managerId.Value]
                 : managerId;
 
             var employee = new Employee(employeeId, name, implicitManager, isEnabled);
@@ -93,7 +93,7 @@ internal class EmployeeRepository : IEmployeeRepository
             {
                 var managerIdFunc = managerMap.ContainsKey(managerId.Value)
                     ? managerMap[managerId.Value]
-                    : () => managerId.Value;
+                    : managerId.Value;
 
                 managerMap.Add(employeeId, managerIdFunc);
                 continue;
